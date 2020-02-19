@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The TrelloAPI package, written in Pharo Smalltalk, allows searching and interaction through the Trello restful api.
+The TrelloAPI package, written in Pharo Smalltalk, allows searching and interaction through the Trello Restful API.
 
 The messages in Smalltalk to interact with Trello aim for a formal similarity very close to the [API documentation](https://developers.trello.com/reference#introduction).
 
