@@ -13,6 +13,7 @@ Class {
 
 { #category : #initialization }
 TrelloAPI class >> initializeKey: aKeyString token: aTokenString [
+	self flag: #'This is a provisory form'.
 	key := aKeyString.
 	token := aTokenString 
 ]
