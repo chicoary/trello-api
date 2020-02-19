@@ -4,8 +4,37 @@ Class {
 	#instVars : [
 		'options'
 	],
+	#classInstVars : [
+		'token',
+		'key'
+	],
 	#category : #'TrelloAPI-Core'
 }
+
+{ #category : #initialization }
+TrelloAPI class >> initializeKey: aKeyString token: aTokenString [
+	key := aKeyString.
+	token := aTokenString 
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> key [
+
+	^ key
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> revokeToken [
+	| result tokens token key |
+	tokens := TrelloAPI tokens.
+	token := TrelloAPI token.
+	key := TrelloAPI key.
+	result := (
+		tokens/token
+			key: key
+	) delete.
+	^ result
+]
 
 { #category : #'as yet unclassified' }
 TrelloAPI class >> search [
@@ -15,6 +44,16 @@ TrelloAPI class >> search [
 { #category : #'as yet unclassified' }
 TrelloAPI class >> searchMembers [
 	^ TrelloSearchMembers new
+]
+
+{ #category : #accessing }
+TrelloAPI class >> token [
+	^ token
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> tokens [
+	^ TrelloTokens new
 ]
 
 { #category : #'as yet unclassified' }
@@ -33,15 +72,12 @@ TrelloAPI >> getResultFrom: url [
 	response := ZnEasy get: url.
 	code := response code.
 	^ code = 200
-		ifFalse: [ self signalHTTPErrorCode: code ]
+		ifFalse: [ self signalHTTPErrorCode: response statusLine ]
 		ifTrue: [ result := STON fromString: response contents ]
 ]
 
 { #category : #'as yet unclassified' }
 TrelloAPI >> includeOptionsTo: anUrl [ 
-  
-	"| stream |"
-	"stream := WriteStream on: String empty."
 	
 	options ifNil: [ ^ anUrl ].
 	
@@ -54,19 +90,17 @@ TrelloAPI >> includeOptionsTo: anUrl [
 	]
 ]
 
-{ #category : #'as yet unclassified' }
-TrelloAPI >> key [
-
-	^ 'db9e904fa729a15bc38adb5a1fbf8bae'
+{ #category : #accessing }
+TrelloAPI >> key [ 
+	^ TrelloAPI key
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI >> signalHTTPErrorCode: aCode [ 
-	(TrelloHTTPError code: aCode) signal
+TrelloAPI >> signalHTTPErrorCode: aStatusLine [ 
+	(TrelloHTTPError statusLine: aStatusLine) signal
 ]
 
-{ #category : #'as yet unclassified' }
-TrelloAPI >> token [
-
-	^ '3dc4847107774faa5512f42126c69ddfc1fc556416b8c0065a03e2ef665ac89c'
+{ #category : #accessing }
+TrelloAPI >> token [ 
+	^ TrelloAPI token
 ]

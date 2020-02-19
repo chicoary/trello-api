@@ -2,7 +2,7 @@ Class {
 	#name : #TrelloHTTPError,
 	#superclass : #Error,
 	#instVars : [
-		'code'
+		'statusLine'
 	],
 	#category : #'TrelloAPI-Exception'
 }
@@ -13,11 +13,16 @@ TrelloHTTPError class >> code: aCode [
 ]
 
 { #category : #'as yet unclassified' }
-TrelloHTTPError >> code: aCode [ 
-	code := aCode
+TrelloHTTPError class >> statusLine: aStatusLine [ 
+	^ self new statusLine: aStatusLine 
 ]
 
 { #category : #accessing }
 TrelloHTTPError >> description [ 	
-	^ 'HTTP Code: ', code asString 
+	^ 'HTTP Error Code: ', statusLine code asString, ' Reason: ', statusLine reason
+]
+
+{ #category : #'as yet unclassified' }
+TrelloHTTPError >> statusLine: aStatusLine [
+	statusLine := aStatusLine
 ]

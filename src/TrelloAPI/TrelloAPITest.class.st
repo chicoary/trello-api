@@ -1,5 +1,5 @@
 "
-A TrelloAPITest is a test class for testing the behavior of TrelloAPI
+The unit tests here are for documentation of how the library is used and not genuine test cases.
 "
 Class {
 	#name : #TrelloAPITest,
