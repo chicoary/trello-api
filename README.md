@@ -1,4 +1,4 @@
-# Pharo Smalltalk library for interaction with Trello API.
+# Pharo Smalltalk library for interaction with Trello API
 
 ## Introduction
 
