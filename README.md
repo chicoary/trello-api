@@ -12,6 +12,12 @@ In the message that corresponds to the endpoint [/search](https://developers.tre
  (trelloAPIObject endpoint: '/search?query=Pharo') get
 ```
 
+or
+
+```smalltalk
+(trelloAPIObject search: 'Pharo') get.
+```
+
 ## Authorization
 
 Before you can use the API you must inform the API Key and the Token.
