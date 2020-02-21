@@ -9,12 +9,12 @@ The messages in Smalltalk to interact with Trello aim for a formal similarity ve
 In the message that corresponds to the endpoint [/search](https://developers.trello.com/reference#search-1) and the example below shows how the Trello API documentation is emulated.
 
 ```smalltalk
-TrelloAPI search all 
-  query: 'Pharo';
-  options: #(
-    cards_limit 2
-  );
-  get.
+trelloAPIObject search all 
+    query: 'Pharo';
+    options: #(
+      cards_limit 2
+    );
+    get.
 ```
 
 ## Authorization
@@ -22,17 +22,25 @@ TrelloAPI search all
 Before you can use the API you must inform the API Key and the Token.
 You can get both by following the instructions at [Key API & Tokens](https://developers.trello.com/reference#api-key-tokens).
 
-**Important**:
-	Be careful not to expose your API Key and Token. Do not create code where the Key API and Token are hardcoded and can be exposed in Github after a commit/push. If you do it by accident use the code below to revoke the token in Playground:
-	
-```smalltalk
-TrelloAPI revokeToken
-```
-
 Then run the following script in Playground:
 
 ```smalltalk
 TrelloAPI 
-	initializeKey: apiKeyString 
-	token: tokenString.
+    register: (
+      TrelloAuthorization 
+        key: 'db9e904fa729a15ba38adb5a1fbf8bae' 
+        token: '06a02a35f1cb0e67c9b6486a1f122653fe1fda4999fba2d7c8940f8bc4304252'
+    )
+    as: 'chicoary'.
+```
+	as: 'chicoary'.
+
+**Important**:
+	Be careful not to expose your API Key and Token. Do not create code where the Key API and Token are hardcoded and can be exposed in Github after a commit/push. If you do it by accident use the code below to revoke the token in Playground:
+	
+```smalltalk
+trelloAPIObject revokeTokenFor: 'çhicoary'
+```
+
+
 ```
