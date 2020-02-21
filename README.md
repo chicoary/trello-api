@@ -45,5 +45,5 @@ TrelloAPI revokeTokenFor: 'çhicoary'
 ## Creation of a TrelloAPI instance
 
 ```smalltalk
-trelloAPIObject := TrelloAPI authorizedfor: 'çhicoary' 
+trelloAPIObject := TrelloAPI authorizedFor: 'çhicoary' 
 ```
