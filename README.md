@@ -9,12 +9,7 @@ The messages in Smalltalk to interact with Trello aim for a formal similarity ve
 In the message that corresponds to the endpoint [/search](https://developers.trello.com/reference#search-1) and the example below shows how the Trello API documentation is emulated.
 
 ```smalltalk
-trelloAPIObject search all 
-    query: 'Pharo';
-    options: #(
-      cards_limit 2
-    );
-    get.
+ (trelloAPIObject endpoint: '/search?query=Pharo') get
 ```
 
 ## Authorization
@@ -33,7 +28,6 @@ TrelloAPI
     )
     as: 'chicoary'.
 ```
-	as: 'chicoary'.
 
 **Important**:
 	Be careful not to expose your API Key and Token. Do not create code where the Key API and Token are hardcoded and can be exposed in Github after a commit/push. If you do it by accident use the code below to revoke the token in Playground:
