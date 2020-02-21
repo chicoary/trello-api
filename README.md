@@ -9,13 +9,30 @@ The messages in Smalltalk to interact with Trello aim for a formal similarity ve
 In the message that corresponds to the endpoint [/search](https://developers.trello.com/reference#search-1) and the example below shows how the Trello API documentation is emulated.
 
 ```smalltalk
- (trelloAPIObject endpoint: '/search?query=Pharo') get
+ (trelloAPI endpoint: '/search?query=Pharo') get
 ```
 
 or
 
 ```smalltalk
-(trelloAPIObject search: 'Pharo') get.
+(trelloAPI search: 'Pharo') get.
+```
+
+Additional parameters can be entered:
+
+```smalltalk
+(trelloAPI endpoint: '/search?query=Pharo&cards_limit=2') get
+```
+
+or
+
+```smalltalk
+(trelloAPI 
+    search: 'Pharo'; 
+    options: #(
+        cards_limit 2
+    ) 
+) get
 ```
 
 ## Authorization
@@ -45,5 +62,5 @@ TrelloAPI revokeTokenFor: 'çhicoary'
 ## Creation of a TrelloAPI instance
 
 ```smalltalk
-trelloAPIObject := TrelloAPI authorizedFor: 'çhicoary' 
+trelloAPI := TrelloAPI authorizedFor: 'çhicoary' 
 ```
