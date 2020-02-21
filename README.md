@@ -39,8 +39,11 @@ TrelloAPI
 	Be careful not to expose your API Key and Token. Do not create code where the Key API and Token are hardcoded and can be exposed in Github after a commit/push. If you do it by accident use the code below to revoke the token in Playground:
 	
 ```smalltalk
-trelloAPIObject revokeTokenFor: 'çhicoary'
+TrelloAPI revokeTokenFor: 'çhicoary'
 ```
 
+## Creation of a TrelloAPI instance
 
+```smalltalk
+trelloAPIObject := TrelloAPI authorizedfor: 'çhicoary' 
 ```
