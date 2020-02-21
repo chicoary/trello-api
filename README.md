@@ -65,6 +65,6 @@ TrelloAPI revokeTokenFor: 'çhicoary'
 trelloAPI := TrelloAPI authorizedFor: 'çhicoary' 
 ```
 
-## Object returned
+## Object returned in response
 
 [STON](https://github.com/svenvc/ston/blob/master/ston-paper.md) objects are returned.
