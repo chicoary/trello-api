@@ -25,6 +25,11 @@ TrelloAuthorization >> key [
 ]
 
 { #category : #'as yet unclassified' }
+TrelloAuthorization >> string [
+	^ '&key={1}&token={2}' format: { key. token }
+]
+
+{ #category : #'as yet unclassified' }
 TrelloAuthorization >> token [
 	^ token
 ]

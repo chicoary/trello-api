@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'options',
-		'authorization'
+		'authorization',
+		'endpoint',
+		'prefix'
 	],
 	#classInstVars : [
 		'authorizations'
@@ -27,30 +29,18 @@ TrelloAPI class >> initialize [
 	authorizations := Dictionary new
 ]
 
-{ #category : #initialization }
-TrelloAPI class >> initializeKey: aKeyString token: aTokenString [
-	self flag: #'This is a provisory form'.
-	key := aKeyString.
-	token := aTokenString 
-]
-
-{ #category : #'as yet unclassified' }
-TrelloAPI class >> key [
-
-	^ key
-]
-
 { #category : #'as yet unclassified' }
 TrelloAPI class >> register: aTrelloAuthorization as: anAuthorizationName [ 
 	authorizations at: anAuthorizationName put: aTrelloAuthorization
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI class >> revokeToken [
-	| result tokens token key |
-	tokens := TrelloAPI tokens.
-	token := TrelloAPI token.
-	key := TrelloAPI key.
+TrelloAPI class >> revokeTokenFor: anAuthorizationName [
+	| result tokens token key authorization |
+	authorization := authorizations at: anAuthorizationName.
+	tokens := self tokens.
+	token := authorization token.
+	key := authorization key.
 	result := (
 		tokens/token
 			key: key
@@ -64,80 +54,74 @@ TrelloAPI class >> search [
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI class >> searchMembers [
-	^ TrelloSearchMembers new
-]
-
-{ #category : #accessing }
-TrelloAPI class >> token [
-	^ token
-]
-
-{ #category : #'as yet unclassified' }
 TrelloAPI class >> tokens [
 	^ TrelloTokens new
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI >> dictionaryFrom: aCollection [ 
-
-	"
-	(TrelloSearch new dictionaryFrom: #(a alfa b beta)) >>> {#a->#alfa. #b->#beta} asDictionary
-	"
-
-	^ (aCollection pairsCollect: [ :key :value | key -> value ]) asDictionary
+TrelloAPI >> / aEndpointString [ 
+	^ self endpointFor: aEndpointString
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI >> getResultFrom: url [
-	| response result code |
+TrelloAPI >> endpoint: anEndpointString [ 
+	endpoint := anEndpointString
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI >> endpointFor: anEndpointString [
+	^ anEndpointString asSymbol value: self
+	
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI >> get [
+	| response code url |
+	url := self mountUrl.
 	response := ZnEasy get: url.
 	code := response code.
 	^ code = 200
-		ifFalse: [ self signalHTTPErrorCode: response statusLine ]
-		ifTrue: [ result := STON fromString: response contents ]
+		ifFalse: [ self signalHTTPError: response statusLine ]
+		ifTrue: [ STON fromString: response contents ]
 ]
 
-{ #category : #'as yet unclassified' }
-TrelloAPI >> includeOptionsTo: anUrl [ 
-	
-	options ifNil: [ ^ anUrl ].
-	
-	^ String streamContents: [ :stream |
-		stream nextPutAll: anUrl.
-		options keysAndValuesDo: [ :key :value | 
-			stream nextPut: $&; nextPutAll: key; nextPut: $=; nextPutAll: value asString.
-		].
-		stream contents 
-	]
+{ #category : #initialization }
+TrelloAPI >> initialize [
+	prefix := 'https://api.trello.com/1'.
+	options := ''
 ]
 
 { #category : #'as yet unclassified' }
 TrelloAPI >> initializeAuthorization: aTrelloAuthorization [ 
-	authorization := aTrelloAuthorization
-]
-
-{ #category : #accessing }
-TrelloAPI >> key [ 
-	^ authorization key
+	authorization := aTrelloAuthorization string
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI >> search [
-	^ TrelloSearch authorization: authorization 
+TrelloAPI >> mountUrl [
+	^ prefix , endpoint , options, authorization
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI >> searchMembers [
-	^ TrelloSearchMembers authorization: authorization
+TrelloAPI >> options: aCollection [ 
+	options := String streamContents: [ :stream |
+		aCollection pairsDo: [ :key :value | 
+			stream nextPut: $&; nextPutAll: key; nextPut: $=; nextPutAll: value asString.
+		].
+		stream contents
+	]
 ]
 
 { #category : #'as yet unclassified' }
-TrelloAPI >> signalHTTPErrorCode: aStatusLine [ 
+TrelloAPI >> search: aQueryString [ 
+	self endpoint: ('/search?query={1}' format: { aQueryString })
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI >> searchMembers: aQueryString [ 
+	endpoint := '/search/members/?query={1}' format: { aQueryString }
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI >> signalHTTPError: aStatusLine [ 
 	(TrelloHTTPError statusLine: aStatusLine) signal
-]
-
-{ #category : #accessing }
-TrelloAPI >> token [ 
-	^ authorization token
 ]
