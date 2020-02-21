@@ -2,14 +2,30 @@ Class {
 	#name : #TrelloAPI,
 	#superclass : #Object,
 	#instVars : [
-		'options'
+		'options',
+		'authorization'
 	],
 	#classInstVars : [
-		'token',
-		'key'
+		'authorizations'
 	],
 	#category : #'TrelloAPI-Core'
 }
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> authorization: aTrelloAuthorization [ 
+	^ self new initializeAuthorization: aTrelloAuthorization 
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> authorizedFor: anAuthorizeName [ 
+	^ self new 
+		initializeAuthorization: (authorizations at: anAuthorizeName) 
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> initialize [
+	authorizations := Dictionary new
+]
 
 { #category : #initialization }
 TrelloAPI class >> initializeKey: aKeyString token: aTokenString [
@@ -22,6 +38,11 @@ TrelloAPI class >> initializeKey: aKeyString token: aTokenString [
 TrelloAPI class >> key [
 
 	^ key
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI class >> register: aTrelloAuthorization as: anAuthorizationName [ 
+	authorizations at: anAuthorizationName put: aTrelloAuthorization
 ]
 
 { #category : #'as yet unclassified' }
@@ -91,9 +112,24 @@ TrelloAPI >> includeOptionsTo: anUrl [
 	]
 ]
 
+{ #category : #'as yet unclassified' }
+TrelloAPI >> initializeAuthorization: aTrelloAuthorization [ 
+	authorization := aTrelloAuthorization
+]
+
 { #category : #accessing }
 TrelloAPI >> key [ 
-	^ TrelloAPI key
+	^ authorization key
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI >> search [
+	^ TrelloSearch authorization: authorization 
+]
+
+{ #category : #'as yet unclassified' }
+TrelloAPI >> searchMembers [
+	^ TrelloSearchMembers authorization: authorization
 ]
 
 { #category : #'as yet unclassified' }
@@ -103,5 +139,5 @@ TrelloAPI >> signalHTTPErrorCode: aStatusLine [
 
 { #category : #accessing }
 TrelloAPI >> token [ 
-	^ TrelloAPI token
+	^ authorization token
 ]

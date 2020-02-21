@@ -4,13 +4,21 @@ The unit tests here are for documentation of how the library is used and not gen
 Class {
 	#name : #TrelloAPITest,
 	#superclass : #TestCase,
+	#instVars : [
+		'trelloAPI'
+	],
 	#category : #'TrelloAPI-Tests'
 }
+
+{ #category : #running }
+TrelloAPITest >> setUp [ 
+	trelloAPI := TrelloAPI  authorizedFor: #chicoary
+]
 
 { #category : #tests }
 TrelloAPITest >> testSearchAll [
 	| result |
-	result := TrelloAPI search all 
+	result := trelloAPI search all 
 		query: 'Pharo';
 		get.
 	self assert: [((result at: #cards) collect: [ :card | card at: #name ]) allSatisfy: [ :name | name includesSubstring: 'Pharo']]. 
@@ -20,7 +28,7 @@ TrelloAPITest >> testSearchAll [
 { #category : #tests }
 TrelloAPITest >> testSearchAllWithOptions [
 	| result |
-	result := TrelloAPI search all 
+	result := trelloAPI search all 
 		query: 'Pharo';
 		options: #(
 			cards_limit 2
@@ -34,7 +42,7 @@ TrelloAPITest >> testSearchAllWithOptions [
 { #category : #tests }
 TrelloAPITest >> testSearchBoards [
 	| result |
-	result := TrelloAPI search boards 
+	result := trelloAPI search boards 
 		query: 'Pharo';
 		get.
 	self assert: [(result collect: [ :board | board at: #name ]) allSatisfy: [ :name | name includesSubstring: 'Pharo']].
@@ -43,7 +51,7 @@ TrelloAPITest >> testSearchBoards [
 { #category : #tests }
 TrelloAPITest >> testSearchCards [
 	| result |
-	result := TrelloAPI search cards 
+	result := trelloAPI search cards 
 		query: 'Pharo';
 		get.
 	self assert: [(result collect: [ :card | card at: #name ]) allSatisfy: [ :name | name includesSubstring: 'Pharo']].
@@ -52,7 +60,7 @@ TrelloAPITest >> testSearchCards [
 { #category : #tests }
 TrelloAPITest >> testSearchMembers [
 	| result |
-	result := TrelloAPI search members 
+	result := trelloAPI search members 
 		query: 'Pharo';
 		get.
 	self assert: [(result collect: [ :member | member at: #name ]) allSatisfy: [ :name | name includesSubstring: 'Pharo']].
@@ -61,7 +69,7 @@ TrelloAPITest >> testSearchMembers [
 { #category : #tests }
 TrelloAPITest >> testSearchOrganizations [
 	| result |
-	result := TrelloAPI search organizations
+	result := trelloAPI search organizations
 		query: 'Pharo';
 		get.
 	self assert: [(result collect: [ :organization | organization at: #displayName ]) allSatisfy: [ :name | name includesSubstring: 'Pharo']].
@@ -70,7 +78,7 @@ TrelloAPITest >> testSearchOrganizations [
 { #category : #tests }
 TrelloAPITest >> testSearchSearchSlashMembers [
 	| result |
-	result := TrelloAPI searchMembers 
+	result := trelloAPI searchMembers 
 		query: 'Martins';
 		get.
 	self assert: [(result collect: [ :member | member at: #fullName ]) allSatisfy: [ :name | 

@@ -14,7 +14,7 @@ TrelloSearch >> all [
 
 { #category : #'as yet unclassified' }
 TrelloSearch >> boards [
-	^ TrelloBoards new
+	^ TrelloBoards authorization: authorization 
 ]
 
 { #category : #'as yet unclassified' }
@@ -30,7 +30,7 @@ TrelloSearch >> buildSearchUrl [
 
 { #category : #'as yet unclassified' }
 TrelloSearch >> cards [
-	^ TrelloCards new
+	^ TrelloCards authorization: authorization 
 ]
 
 { #category : #'as yet unclassified' }
@@ -48,7 +48,7 @@ TrelloSearch >> get [
 
 { #category : #'as yet unclassified' }
 TrelloSearch >> members [
-	^ TrelloMembers new
+	^ TrelloMembers authorization: authorization 
 ]
 
 { #category : #'as yet unclassified' }
@@ -60,7 +60,7 @@ TrelloSearch >> options: aCollection [
 { #category : #'as yet unclassified' }
 TrelloSearch >> organizations [
 
-	^ TrelloOrganizations new
+	^ TrelloOrganizations authorization: authorization
 ]
 
 { #category : #accessing }
